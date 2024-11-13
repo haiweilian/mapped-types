@@ -33,6 +33,7 @@ export function inheritValidationMetadata(
   parentClass: Type<any>,
   targetClass: Function,
   isPropertyInherited?: (key: string) => boolean,
+  isValidationInherited?: (name?: string) => boolean,
 ) {
   if (!isClassValidatorAvailable()) {
     return;
@@ -55,6 +56,9 @@ export function inheritValidationMetadata(
       .filter(
         ({ propertyName }) =>
           !isPropertyInherited || isPropertyInherited(propertyName),
+      )
+      .filter(
+        ({ name }) => !isValidationInherited || isValidationInherited(name),
       )
       .map((value) => {
         const originalType = Reflect.getMetadata(
